@@ -10,7 +10,7 @@ logging.getLogger("faster_whisper").setLevel(logging.DEBUG)
 app = FastAPI()
 
 # Load Whisper model (modify for performance)
-model = WhisperModel("turbo", device="cuda", compute_type="float16")
+model = WhisperModel("base", device="cpu", compute_type="float32")
 
 @app.post("/transcribe/")
 async def transcribe(audio: UploadFile = File(...)):
@@ -22,8 +22,8 @@ async def transcribe(audio: UploadFile = File(...)):
     segments, _ = model.transcribe(tmp_path)
 
     transcript = " ".join(segment.text for segment in segments)
-    logging.logger.info(f"Transcription: {transcript}")
-    logging.logger.info(f"Execution Time: {time.time() - start_time:.4f} secconds")
+    logging.info(f"Transcription: {transcript}")
+    logging.info(f"Execution Time: {time.time() - start_time:.4f} secconds")
     return {"transcription": transcript}
 
 # Run using: uvicorn whisper_server:app --host 0.0.0.0 --port 8000
