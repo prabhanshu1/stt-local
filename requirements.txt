@@ -2,3 +2,4 @@ uvicorn
 faster-whisper 
 fastapi 
 python-multipart
+transformers
